@@ -19,7 +19,7 @@ def students_list(request):
    'first_name': u'Олександр',
    'last_name': u'Павлюк',
    'ticket': 235,
-   'image': 'img/morihei-ueshiba2.jpg')
+   'image': 'img/morihei-ueshiba2.jpg'})
    return render(request, 'students/student_list.html', {'students': students})
    
 def students_add(request):
