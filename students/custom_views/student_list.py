@@ -7,16 +7,18 @@ from ..models import Student
 
 def students_list(request):
    students = Student.objects.all()
-   
+
+   counts = [num+1 for num in range(len(students))]
+
    # try to order students list
    order_by = request.GET.get('order_by', '')
    students = students.order_by('last_name')
-   if order_by in ('last_name', 'first_name', 'ticket'):
+   if order_by in ('last_name', 'first_name', 'ticket', 'id'):
       students = students.order_by(order_by)
       if request.GET.get('reverse', '') == '1':
          students = students.reverse()
    
-   return render(request, 'students/student_list.html', {'students': students})
+   return render(request, 'students/student_list.html', {'students': students, 'counts': counts})
    
 def students_add(request):
    return HttpResponse('<h1>Student Add Form</h1>')
