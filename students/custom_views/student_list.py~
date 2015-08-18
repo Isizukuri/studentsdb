@@ -3,23 +3,18 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
+from ..models import Student
+
 def students_list(request):
-   students = (
-   {'id': 1,
-   'first_name': u'Віталій',
-   'last_name': u'Подоба',
-   'ticket': 235,
-   'image': 'img/ueshiba1.jpeg'},
-   {'id': 2,
-   'first_name': u'Корост',
-   'last_name': u'Андрій',
-   'ticket': 2123,
-   'image': 'img/takeda.jpg'},
-   {'id' : 3,
-   'first_name': u'Олександр',
-   'last_name': u'Павлюк',
-   'ticket': 235,
-   'image': 'img/morihei-ueshiba2.jpg'})
+   students = Student.objects.all()
+   
+   # try to order students list
+   order_by = request.GET.get('order_by', '')
+   if order_by in ('last_name', 'first_name', 'ticket'):
+      students = students.order_by(order_by)
+      if request.GET.get('reverse', '') == '1':
+         students = students.reverse()
+   
    return render(request, 'students/student_list.html', {'students': students})
    
 def students_add(request):
