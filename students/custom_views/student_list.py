@@ -10,6 +10,7 @@ def students_list(request):
    
    # try to order students list
    order_by = request.GET.get('order_by', '')
+   students = students.order_by('last_name')
    if order_by in ('last_name', 'first_name', 'ticket'):
       students = students.order_by(order_by)
       if request.GET.get('reverse', '') == '1':
