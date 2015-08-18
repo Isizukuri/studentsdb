@@ -1,0 +1,25 @@
+% load static from staticfiles %}
+
+<!DOCTYPE html>
+<html lang="uk">
+
+   <head>
+		<meta charset="UTF-8"/>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap/3.3.0/css/bootstrap.min.css">
+		<link rel="stylesheet" href="{{PORTAL_URL}}{% static "css/main.css" %}">
+   </head>
+
+   <body>
+      <nav>
+        <ul class="pagination">
+          <li><a href="#">&laquo;</a></li>
+          <li class="active"><a href="#">1</a></li>
+          <li><a href="#">2</a></li>
+          <li><a href="#">3</a></li>
+          <li><a href="#">4</a></li>
+          <li><a href="#">5</a></li>
+          <li><a href="#">&raquo;</a></li>
+        </ul>
+      </nav>
+  </body>
+</html>
