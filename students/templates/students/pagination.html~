@@ -10,22 +10,16 @@
    </head>
 
    <body>
-   {% if students.has_other_pages %}
-   {% with order_by=request.GET.order_by reverse=request.GET.reverse %}
-      <nav>
-        <ul class="pagination">
-          <li><a href="{% url "home" %}?page=1&amp;order_by={{ order_by }}&amp;reverse={{ reverse }}">&laquo;</a></li>
-          {% for p in students.paginator.page_range %}
-          <li {% if students.number == p %}class="active"{% endif %}>
-            <a href="{% url "home" %}?page={{ p }}">{{ p }}</a>
-          </li>
-          {% endfor %}
-          <li>
-            <a href="{% url "home" %}?page={{ students.paginator.num_pages }}">&raquo;</a>
-          </li>
-        </ul>
-      </nav>
-    {% endwith %}
-    {% endif %}
+   <a id='loadmore'>Load More</a>
+   
+   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+   <script>
+   $('#loadmore').click(function(){
+      $.ajax({url: "{% url 'page'%}?page={{ p }}&amp;order_by={{ order_by }}&amp;reverse={{ reverse }}", success: function(result){
+        $("tbody").append(result);
+    }});          
+   });
+   </script>   
+   
   </body>
-</html>
+</html>         

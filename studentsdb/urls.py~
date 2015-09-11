@@ -19,6 +19,7 @@ from django.contrib import admin
 urlpatterns = patterns('',
 # Students urls
 url(r'^$', 'students.custom_views.student_list.students_list', name='home'),
+url(r'^students/page/$', 'students.custom_views.student_list.pages', name='page'),
 url(r'^students/add/$', 'students.custom_views.student_list.students_add',
    name='students_add'),
 url(r'^students/(?P<sid>\d+)/edit/$', 'students.custom_views.student_list.students_edit', name='students_edit'),
@@ -34,3 +35,11 @@ url(r'^groups/(?P<gid>\d+)/delete/$',
 url(r'^journal/', 'students.custom_views.journal.journal', name = 'journal'),
 url(r'^admin/', include(admin.site.urls)),
 )
+
+from .settings import MEDIA_ROOT, DEBUG
+
+if DEBUG:
+# serve files from media folder
+   urlpatterns += patterns('',
+      (r'^media/(?P<path>.*)$', 'django.views.static.serve', {
+      'document_root': MEDIA_ROOT}))

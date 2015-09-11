@@ -19,6 +19,7 @@ from django.contrib import admin
 urlpatterns = patterns('',
 # Students urls
 url(r'^$', 'students.custom_views.student_list.students_list', name='home'),
+url(r'^students/page$', 'students.custom_views.student_list.pages', name='page'),
 url(r'^students/add/$', 'students.custom_views.student_list.students_add',
    name='students_add'),
 url(r'^students/(?P<sid>\d+)/edit/$', 'students.custom_views.student_list.students_edit', name='students_edit'),
