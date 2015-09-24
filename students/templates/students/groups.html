@@ -12,22 +12,42 @@
 
 					<!-- Start Students Listing -->
 						<table class="table table-hover table-striped">
-							
+							{% with order_by=request.GET.order_by reverse=request.GET.reverse %}
 							<thead>
 								<tr>
-									<th>#</th>
-									<th><a href="">Назва &uarr;</a></th>
-									<th><a href="">Староста</a></th>
+									<th>
+          								<a href="{% url "groups" %}?order_by=id{% if order_by == 'id' and reverse != '1' %}&amp;reverse=1{% endif %}">#
+          
+									  {% if order_by == 'id' and reverse != '1' %}&uarr;
+									  {% elif order_by == 'id' and reverse == '1' %}&darr;
+									  {% endif %}
+
+        								</a>
+      								</th>
+									<th>
+        <a href="{% url "groups" %}?order_by=title{% if order_by == 'title' and reverse != '1' %}&amp;reverse=1{% endif %}">
+          Назва
+          {% if order_by == 'title' and reverse != '1' %}&uarr;
+          {% elif order_by == 'title' and reverse == '1' %}&darr;
+          {% endif %}
+      </th>
+      <th>
+        <a href="{% url "groups" %}?order_by=ticket{% if order_by == 'ticket' and reverse != '1' %}&amp;reverse=1{% endif %}">
+          Староста
+          {% if order_by == 'leader' and reverse != '1' %}&uarr;
+          {% elif order_by == 'leader' and reverse == '1' %}&darr;
+          {% endif %}
+      </th>
 									<th>Дії</th>
 								</tr>
 							</thead>
 							
 							<tbody>
-								
+							{% for group in groups %}	
 								<tr>
-									<td>1</td>
-									<td><a title="Редагувати" href="{% url "groups_edit" 0 %}">МтМ-21</a></td>
-									<td><a title="Редагувати" href="#">Ячменев Олег</a></td>									
+									<td>{{group.id}}</td>
+									<td><a title="Редагувати" href="{% url "groups_edit" 0 %}">{{ group.title }}</a></td>
+									<td><a title="Редагувати" href="#">{{ group.leader }}</a></td>									
 									<td>
 										<div class="dropdown">
 										  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
@@ -43,50 +63,22 @@
 
 									</td>
 								</tr>
-								
-								<tr>
-									<td>2</td>
-									<td><a title="Редагувати" href="{% url "groups_edit" 0 %}">МтМ-22</a></td>
-									<td><a title="Редагувати" href="#">Віталій Подоба</a></td>									
-									<td>
-										<div class="dropdown">
-										  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
-										    Дія
-										    <span class="caret"></span>
-										  </button>
-										  <ul class="dropdown-menu" role="menu">
-										    <li role="presentation"><a role="menuitem" tabindex="-1" href="/journal">Відвідування</a></li>
-										    <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url "groups_edit" 0 %}">Редагування</a></li>
-										    <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url "groups_delete" 0 %}">Видалити</a></li>
-										  </ul>
-										</div>
-
-									</td>
-								</tr>
-								
-								<tr>
-									<td>3</td>
-									<td><a title="Редагувати" href="{% url "groups_edit" 0 %}">МтМ-23</a></td>
-									<td><a title="Редагувати" href="#">Іванов Андрій</a></td>									
-									<td>
-										<div class="dropdown">
-										  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
-										    Дія
-										    <span class="caret"></span>
-										  </button>
-										  <ul class="dropdown-menu" role="menu">
-										    <li role="presentation"><a role="menuitem" tabindex="-1" href="/journal">Відвідування</a></li>
-										    <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url "groups_edit" 0 %}">Редагування</a></li>
-										    <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url "groups_delete" 0 %}">Видалити</a></li>
-										  </ul>
-										</div>
-
-									</td>
-								</tr>
-								
+							
+							{% endfor %}		
 							</tbody>
 						</table>
-						
-{% include 'students/pagination.html' %}
+						{% endwith %}
+
+{% if groups.has_other_pages %}
+<nav>
+  <ul class="pagination">
+    <li><a href="{% url "groups" %}?page=1&amp;order_by={{ request.GET.order_by }}&amp;reverse={{ request.GET.reverse }}">&laquo;</a></li>
+    {% for p in groups.paginator.page_range %}
+    <li {% if groups.number == p %}class="active"{% endif %}><a href="{% url "groups" %}?page={{ p }}&amp;order_by={{ request.GET.order_by }}&amp;reverse={{ request.GET.reverse }}">{{ p }}</a></li>
+    {% endfor %}
+    <li><a href="{% url "groups" %}?page={{ groups.paginator.num_pages }}&amp;order_by={{ request.GET.order_by }}&amp;reverse={{ request.GET.reverse }}">&raquo;</a></li>
+  </ul>
+</nav>
+{% endif %}
                   
 {% endblock content %}

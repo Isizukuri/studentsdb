@@ -2,9 +2,36 @@
 
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+from ..models import Group
 
 def groups_list(request):
-   return render(request, 'students/groups.html', {})
+	groups = Group.objects.all()
+
+	counts = [num+1 for num in range(len(groups))]
+
+   	# try to order group list
+	order_by = request.GET.get('order_by', '')
+	groups = groups.order_by('title')
+	if order_by in ('title', 'leader', 'id'):
+		  groups = groups.order_by(order_by)
+		  if request.GET.get('reverse', '') == '1':
+		     groups = groups.reverse()
+		     
+	#paginate groups
+	paginator = Paginator(groups, 3)
+	page = request.GET.get('page')
+	try:
+		groups = paginator.page(page)
+	except PageNotAnInteger:
+		# If page is not an integer, deliver first page.
+		groups = paginator.page(1)
+	except EmptyPage:
+		# If page is out of range (e.g. 9999), deliver last page of results.
+		groups = paginator.page(paginator.num_pages)
+
+	return render(request, 'students/groups.html', {'groups': groups})
    
 def groups_add(request):
    return HttpResponse('<h1>Group Add Form</h1>')
