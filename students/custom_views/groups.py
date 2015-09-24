@@ -4,14 +4,12 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from ..models import Group
+from ..models.group import Group
 
 def groups_list(request):
 	groups = Group.objects.all()
 
-	counts = [num+1 for num in range(len(groups))]
-
-   	# try to order group list
+	# try to order group list
 	order_by = request.GET.get('order_by', '')
 	groups = groups.order_by('title')
 	if order_by in ('title', 'leader', 'id'):

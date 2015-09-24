@@ -32,8 +32,12 @@ url(r'^groups/(?P<gid>\d+)/delete/$',
    'students.custom_views.groups.groups_delete',
    name='groups_delete'),
 url(r'^journal/', 'students.custom_views.journal.journal', name = 'journal'),
+url(r'^exams/', 'students.custom_views.exams.exams', name='exams'),
 url(r'^admin/', include(admin.site.urls)),
+
 )
+
+#
 
 from .settings import MEDIA_ROOT, DEBUG
 

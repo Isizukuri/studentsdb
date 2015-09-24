@@ -4,12 +4,10 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from ..models import Student
+from ..models.student import Student
 
 def students_list(request):
    students = Student.objects.all()
-
-   counts = [num+1 for num in range(len(students))]
 
    # try to order students list
    order_by = request.GET.get('order_by', '')
@@ -32,7 +30,7 @@ def students_list(request):
       students = paginator.page(paginator.num_pages)
 
   
-   return render(request, 'students/student_list.html', {'students': students, 'counts': counts})
+   return render(request, 'students/student_list.html', {'students': students})
    
 def students_add(request):
    return HttpResponse('<h1>Student Add Form</h1>')
